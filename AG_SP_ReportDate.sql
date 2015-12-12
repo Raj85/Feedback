@@ -216,7 +216,9 @@ SELECT 'ALL LOCATION'       AS Location,
        Sum(count_question2) AS All_q2 ,
        Sum(count_question3) AS All_q3 ,
        Sum(count_question4) AS All_q4 ,
-       Sum(count_question5) AS All_q5 
+       Sum(count_question5) AS All_q5 ,
+       Sum(count_question6) AS All_q6 ,
+       Sum(count_question7) AS All_q7
 FROM   intelapp.rptrawdata 
 GROUP  BY rptrawdata.feedback;
        
@@ -244,7 +246,15 @@ SELECT          rptrawdata.primarylocation, rptrawdata.feedback,
                 CASE 
                                 WHEN Round(count_question5/totrespbyloc *100,2) IS NULL THEN 0 
                                 ELSE Round(count_question5/totrespbyloc *100,2) 
-                end AS perct_q5              
+                end AS perct_q5,
+                CASE 
+                                WHEN Round(count_question6/totrespbyloc *100,2) IS NULL THEN 0 
+                                ELSE Round(count_question6/totrespbyloc *100,2) 
+                end AS perct_q6,
+                CASE 
+                                WHEN Round(count_question7/totrespbyloc *100,2) IS NULL THEN 0 
+                                ELSE Round(count_question7/totrespbyloc *100,2) 
+                end AS perct_q7
 FROM            intelapp.rptrawdata 
 LEFT OUTER JOIN intelapp.totalbylocation 
 ON              rptrawdata.primarylocation = totalbylocation.primarylocation
@@ -254,15 +264,17 @@ Union all
 
 SELECT totalfromalllocbyfeedback.location, 
        totalfromalllocbyfeedback.feedback, 
-       Round((totalfromalllocbyfeedback.all_q1/totalfromallloc.totrespfromallloc)*100,2) as perct_q1,
-       Round((totalfromalllocbyfeedback.all_q2/totalfromallloc.totrespfromallloc)*100,2) as perct_q2,
-       Round((totalfromalllocbyfeedback.all_q3/totalfromallloc.totrespfromallloc)*100,2) as perct_q3,
-       Round((totalfromalllocbyfeedback.all_q4/totalfromallloc.totrespfromallloc)*100,2) as perct_q4,
-       Round((totalfromalllocbyfeedback.all_q5/totalfromallloc.totrespfromallloc)*100,2) as perct_q5
+       case when Round((totalfromalllocbyfeedback.all_q1/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q1/totalfromallloc.totrespfromallloc)*100,2) end as perct_q1,
+       case when Round((totalfromalllocbyfeedback.all_q2/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q2/totalfromallloc.totrespfromallloc)*100,2) end as perct_q2,
+       case when Round((totalfromalllocbyfeedback.all_q3/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q3/totalfromallloc.totrespfromallloc)*100,2) end as perct_q3,
+       case when Round((totalfromalllocbyfeedback.all_q4/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q4/totalfromallloc.totrespfromallloc)*100,2) end as perct_q4,
+       case when Round((totalfromalllocbyfeedback.all_q5/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q5/totalfromallloc.totrespfromallloc)*100,2) end as perct_q5,
+       case when Round((totalfromalllocbyfeedback.all_q6/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q6/totalfromallloc.totrespfromallloc)*100,2) end as perct_q6,
+       case when Round((totalfromalllocbyfeedback.all_q7/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q7/totalfromallloc.totrespfromallloc)*100,2) end as perct_q7
 FROM   intelapp.totalfromalllocbyfeedback 
 JOIN   intelapp.totalfromallloc) as FinalRptData;
 
-   ELSE 
+ELSE 
 ### Note : Clean up Location Names###
 DROP TEMPORARY TABLE IF EXISTS intelapp.RptRawData;
 DROP TEMPORARY TABLE IF EXISTS intelapp.TotalbyLocation;
@@ -472,7 +484,9 @@ SELECT 'ALL LOCATION'       AS Location,
        Sum(count_question2) AS All_q2 ,
        Sum(count_question3) AS All_q3 ,
        Sum(count_question4) AS All_q4 ,
-       Sum(count_question5) AS All_q5 
+       Sum(count_question5) AS All_q5 ,
+       Sum(count_question6) AS All_q6 ,
+       Sum(count_question7) AS All_q7
 FROM   intelapp.rptrawdata 
 GROUP  BY rptrawdata.feedback;
        
@@ -500,7 +514,15 @@ SELECT          rptrawdata.primarylocation, rptrawdata.feedback,
                 CASE 
                                 WHEN Round(count_question5/totrespbyloc *100,2) IS NULL THEN 0 
                                 ELSE Round(count_question5/totrespbyloc *100,2) 
-                end AS perct_q5              
+                end AS perct_q5,
+                CASE 
+                                WHEN Round(count_question6/totrespbyloc *100,2) IS NULL THEN 0 
+                                ELSE Round(count_question6/totrespbyloc *100,2) 
+                end AS perct_q6,
+                CASE 
+                                WHEN Round(count_question7/totrespbyloc *100,2) IS NULL THEN 0 
+                                ELSE Round(count_question7/totrespbyloc *100,2) 
+                end AS perct_q7            
 FROM            intelapp.rptrawdata 
 LEFT OUTER JOIN intelapp.totalbylocation 
 ON              rptrawdata.primarylocation = totalbylocation.primarylocation
@@ -510,11 +532,13 @@ Union all
 
 SELECT totalfromalllocbyfeedback.location, 
        totalfromalllocbyfeedback.feedback, 
-       Round((totalfromalllocbyfeedback.all_q1/totalfromallloc.totrespfromallloc)*100,2) as perct_q1,
-       Round((totalfromalllocbyfeedback.all_q2/totalfromallloc.totrespfromallloc)*100,2) as perct_q2,
-       Round((totalfromalllocbyfeedback.all_q3/totalfromallloc.totrespfromallloc)*100,2) as perct_q3,
-       Round((totalfromalllocbyfeedback.all_q4/totalfromallloc.totrespfromallloc)*100,2) as perct_q4,
-       Round((totalfromalllocbyfeedback.all_q5/totalfromallloc.totrespfromallloc)*100,2) as perct_q5
+       case when Round((totalfromalllocbyfeedback.all_q1/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q1/totalfromallloc.totrespfromallloc)*100,2) end as perct_q1,
+       case when Round((totalfromalllocbyfeedback.all_q2/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q2/totalfromallloc.totrespfromallloc)*100,2) end as perct_q2,
+       case when Round((totalfromalllocbyfeedback.all_q3/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q3/totalfromallloc.totrespfromallloc)*100,2) end as perct_q3,
+       case when Round((totalfromalllocbyfeedback.all_q4/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q4/totalfromallloc.totrespfromallloc)*100,2) end as perct_q4,
+       case when Round((totalfromalllocbyfeedback.all_q5/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q5/totalfromallloc.totrespfromallloc)*100,2) end as perct_q5,
+       case when Round((totalfromalllocbyfeedback.all_q6/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q6/totalfromallloc.totrespfromallloc)*100,2) end as perct_q6,
+       case when Round((totalfromalllocbyfeedback.all_q7/totalfromallloc.totrespfromallloc)*100,2) IS NULL THEN 0 else Round((totalfromalllocbyfeedback.all_q7/totalfromallloc.totrespfromallloc)*100,2) end as perct_q7
 FROM   intelapp.totalfromalllocbyfeedback 
 JOIN   intelapp.totalfromallloc) as FinalRptData
 where  primarylocation =loc ;
